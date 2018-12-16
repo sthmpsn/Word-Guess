@@ -17,12 +17,16 @@
 <body>
     <div class="page-wrapper px-3 py-3">
         <div class="row">
-            <div class="col-lg-4 statsDiv">
+            <div class="col-lg-4 statsDiv text-center font-weight-bold">
                 <h1>Save The World</h1>
                 <h3>Word Guess Game</h3>
+                <div class="alert-info px-2 py-1 text-left">
+                    <p>There is a World Destroyer missle heading toward the planet.</p>
+                    <p class="alert-warning">Your primary objects is to guess the missle override code to divert the missle away from the planet.</p>
+                </div>
                 <p>
-                    <p>Wins: <span id="winResults"></span></p>
-                    <p>Losses: <span id="lossResults"></span></p>
+                    <p>Saved the Word Count: <span id="winResults"></span></p>
+                    <p>Faild to Save the World: <span id="lossResults"></span></p>
                     <p>Guesses Left: <span id="guessRemaining"></span></p>
                     <p>Your Guesses So Far: <span id="guess"></span></p>
                 </p>
@@ -30,8 +34,8 @@
                 <div id="warnBanner" class="warnings"></div>
             </div>
             <div class="col-lg-8 gameDiv">
-                <div class="img-earthDiv">
-                    <img id="img-earth" src="assets/images/earth.jpg" class="img-fluid" alt="crystal ball">
+                <div class="img-planetDiv">
+                    <img id="imgPlanet" src="assets/images/earth.jpg" class="img-fluid" alt="planet">
                 </div>
             </div>
         </div>

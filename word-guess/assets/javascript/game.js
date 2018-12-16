@@ -2,6 +2,22 @@
 var alphabet = "abcdefghijklmnopqrstuvwxyz";
 var validGuesses = alphabet.split("");
 
+//Static defint Array of Planet images
+var planets = [
+    "europa.jpg",
+    "jupiter.jpg",
+    "mars.jpg",
+    "mercury.jpg",
+    "moon.jpg",
+    "neptune.jpg",
+    "pluto.jpg",
+    "saturn.jpg",
+    "titan.jpg",
+    "uranus.jpg",
+    "venus.png"
+];
+
+var planetSelect = "earth"; // earth is always starting planet static in HTML
 
 // Get the Element that will be updated with the User guesses, wins, losses, and remaining guesses
 var playerWinsEl = document.getElementById("winResults");
@@ -10,6 +26,7 @@ var numGuessRemainEl = document.getElementById("guessRemaining");
 var playerGuessEl = document.getElementById("guess");
 var gameResultEl = document.getElementById("gameResult");
 var warnBannerEl = document.getElementById("warnBanner");
+var planetImgEl = document.getElementById("imgPlanet");
 
 var winCounter = 0;
 var lossCounter = 0;
@@ -23,12 +40,18 @@ function initNewGame() {
     console.log("Computer Selection: " + compSelection);     //use the console to cheat
     guessCounter = initGuessAllowed;   //reset Counter
     warnBannerEl.textContent = ""; //reset warning
+    
     displayGuessRemain();
     displayWins();
     displayLosses();
     displayGuess();
 }
 
+function randPlanet(){
+    planetSelect = planets[Math.floor(Math.random() * planets.length)];  // new random planet chosen
+    console.log(planetSelect);
+    return planetSelect;
+}
 
 function displayGuessRemain() {
     numGuessRemainEl.textContent = guessCounter;     //display the number of guesses remaining
@@ -58,8 +81,8 @@ document.onkeyup = function (event) {
         if (!(playerGuessEl.textContent.includes(playerGuess))){
             if (guessCounter > 1) {
                 if (playerGuess === compSelection) {
-                    alert("Whoa, you guessed my letter!");
-                    gameResultEl.textContent = 'You Won last Game!!';
+                    alert("You did it!  You cracked the code and save the planet!");
+                    gameResultEl.textContent = 'You saved the planet but it\'s not over yet!!';
                     gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
                     winCounter++;
                     initNewGame();
@@ -73,9 +96,11 @@ document.onkeyup = function (event) {
                 }
             }
             else {
-                alert("You lost, I'm doubting your psycic abilities!");            
-                gameResultEl.textContent = 'You lost last Game!!';
+                alert("You lost, I'm doubting your code cracking abilities!");            
+                gameResultEl.textContent = "Oh No! " + planetSelect.toUpperCase() + " was destroy, this new planet will have to do!!";
                 gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+                planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
+                planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
                 lossCounter++;
                 initNewGame();
             }

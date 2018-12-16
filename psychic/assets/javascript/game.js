@@ -22,6 +22,7 @@ function initNewGame() {
     compSelection = validGuesses[Math.floor(Math.random() * validGuesses.length)];  // new random letter chosen
     console.log("Computer Selection: " + compSelection);     //use the console to cheat
     guessCounter = initGuessAllowed;   //reset Counter
+    warnBannerEl.textContent = ""; //reset warning
     displayGuessRemain();
     displayWins();
     displayLosses();
@@ -31,7 +32,7 @@ function initNewGame() {
 
 function displayGuessRemain() {
     numGuessRemainEl.textContent = guessCounter;     //display the number of guesses remaining
-    numGuessRemainEl.setAttribute("class","alert-danger font-weight-bold");
+    numGuessRemainEl.setAttribute("class","alert-warning font-weight-bold");
 }
 
 function displayGuess(){
@@ -53,32 +54,37 @@ initNewGame();
 document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
 
-    if (validGuesses.indexOf(playerGuess) !== -1) {
-        if (guessCounter !== 0) {
-            if (playerGuess === compSelection) {
-                alert("Whoa, you guessed my letter!");
-                gameResultEl.textContent = 'You Won last Game!!';
-                gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
-                winCounter++;
-                initNewGame();
+    if (validGuesses.indexOf(playerGuess) !== -1){
+        if (!(playerGuessEl.textContent.includes(playerGuess))){
+            if (guessCounter > 1) {
+                if (playerGuess === compSelection) {
+                    alert("Whoa, you guessed my letter!");
+                    gameResultEl.textContent = 'You Won last Game!!';
+                    gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
+                    winCounter++;
+                    initNewGame();
+                }
+                else {
+                    --guessCounter;
+                    displayGuessRemain();
+                    playerGuessEl.appendChild(document.createTextNode(playerGuess + "  |  "));
+                    playerGuessEl.setAttribute("class", "alert-info");
+                    console.log(playerGuess);
+                }
             }
             else {
-                guessCounter--;
-                displayGuessRemain();
-                playerGuessEl.appendChild(document.createTextNode(playerGuess + "  |  "));
-                playerGuessEl.setAttribute("class", "alert-info");
-                console.log(playerGuess);
+                alert("You lost, I'm doubting your psycic abilities!");            
+                gameResultEl.textContent = 'You lost last Game!!';
+                gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+                lossCounter++;
+                initNewGame();
             }
         }
         else {
-            alert("You lost, I'm doubting your psycic abilities!");            
-            gameResultEl.textContent = 'You lost last Game!!';
-            gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-            lossCounter++;
-            initNewGame();
+            console.log(playerGuess + " was already chosen, choose a different letter");
+            warnBannerEl.textContent = "You already guessed \" " + playerGuess + " \" " + " please select a different letter";
+            warnBannerEl.setAttribute("class", "alert-warning text-center");            
         }
-
-
     }
     else {
         console.log(playerGuess + " is an invalid option");

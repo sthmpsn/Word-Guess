@@ -2,3 +2,11 @@
     background-image: url("../images/darkness.png");
     color: white;
 }
+
+.jumbotron {
+    font-size: 3rem;
+}
+
+.warnings {
+    font-size: 1.6rem;
+}

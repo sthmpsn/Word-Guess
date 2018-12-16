@@ -83,13 +83,13 @@ document.onkeyup = function (event) {
         else {
             console.log(playerGuess + " was already chosen, choose a different letter");
             warnBannerEl.textContent = "You already guessed \" " + playerGuess + " \" " + " please select a different letter";
-            warnBannerEl.setAttribute("class", "alert-warning text-center");            
+            warnBannerEl.setAttribute("class", "warnings alert-warning text-center");            
         }
     }
     else {
         console.log(playerGuess + " is an invalid option");
         warnBannerEl.textContent = "\" " + playerGuess + " \" " + "is an invalid option, please select a letter";
-        warnBannerEl.setAttribute("class", "alert-warning text-center");
+        warnBannerEl.setAttribute("class", "warnings alert-warning text-center");
     }
 };
 

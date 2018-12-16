@@ -25,11 +25,13 @@ function initNewGame() {
     displayGuessRemain();
     displayWins();
     displayLosses();
+    displayGuess();
 }
 
 
 function displayGuessRemain() {
     numGuessRemainEl.textContent = guessCounter;     //display the number of guesses remaining
+    numGuessRemainEl.setAttribute("class","alert-danger font-weight-bold");
 }
 
 function displayGuess(){
@@ -56,7 +58,7 @@ document.onkeyup = function (event) {
             if (playerGuess === compSelection) {
                 alert("Whoa, you guessed my letter!");
                 gameResultEl.textContent = 'You Won last Game!!';
-                gameResultEl.setAttribute("class", "jumbotron text-center alert-success");
+                gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
                 winCounter++;
                 initNewGame();
             }
@@ -71,7 +73,7 @@ document.onkeyup = function (event) {
         else {
             alert("You lost, I'm doubting your psycic abilities!");            
             gameResultEl.textContent = 'You lost last Game!!';
-            gameResultEl.setAttribute("class", "jumbotron text-center alert-danger");
+            gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
             lossCounter++;
             initNewGame();
         }

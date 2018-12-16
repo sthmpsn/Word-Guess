@@ -1,0 +1,17 @@
+.gameDiv {
+    background-image: url("../images/darkness.png");
+    color: white;
+    height: 100%;
+}
+
+.jumbotron {
+    font-size: 3rem;
+}
+
+.warnings {
+    font-size: 1.6rem;
+}
+
+#img-earth {
+    max-width: 50%;
+}

@@ -1,8 +1,18 @@
-//Statically define the alphabet to be use later
+// Statically define the alphabet to check for valid guess
 var alphabet = "abcdefghijklmnopqrstuvwxyz";
 var validGuesses = alphabet.split("");
 
-//Static defint Array of Planet images
+// Array to select random word from 
+var secretWords = [
+    "rosebud",
+    "buttercup",
+    "predator",
+    "alien"
+];
+
+var correctGuesses = [];     // Array to store the correctly guessed letters
+
+// Static defint Array of Planet images
 var planets = [
     "europa.jpg",
     "jupiter.jpg",
@@ -18,6 +28,7 @@ var planets = [
 ];
 
 var planetSelect = "earth"; // earth is always starting planet static in HTML
+var compSelection = "";  //secret word selection
 
 // Get the Element that will be updated with the User guesses, wins, losses, and remaining guesses
 var playerWinsEl = document.getElementById("winResults");
@@ -27,29 +38,53 @@ var playerGuessEl = document.getElementById("guess");
 var gameResultEl = document.getElementById("gameResult");
 var warnBannerEl = document.getElementById("warnBanner");
 var planetImgEl = document.getElementById("imgPlanet");
+var secretWordEl = document.getElementById("secretWord");
 
 var winCounter = 0;
 var lossCounter = 0;
-var initGuessAllowed = 9;  // initialize the number of guesses to allowed before losing
+var initGuessAllowed = 9;  // initialize the number of guesses to allowed before losing a round
 var guessCounter = initGuessAllowed;
 
-var compSelection = "";
+
 
 function initNewGame() {
-    compSelection = validGuesses[Math.floor(Math.random() * validGuesses.length)];  // new random letter chosen
-    console.log("Computer Selection: " + compSelection);     //use the console to cheat
+    correctGuesses = [];  // Clear the correctGuesses Array if entry from a previous game
     guessCounter = initGuessAllowed;   //reset Counter
     warnBannerEl.textContent = ""; //reset warning
-    
+    playerGuessEl.textContent = ""; //reset "Your Guesses so Far" 
+    playerWinsEl.textContent = winCounter;      //display the number of wins
+    playerLossesEl.textContent = lossCounter;      //display the number of Losses
+
+    compSelection = secretWords[Math.floor(Math.random() * secretWords.length)];  // new random secret word chosen
+    compChars = compSelection.split("");
+    console.log("Computer Selection: " + compSelection, "Split Results:" + compChars);     //use the console to cheat
+
+    for (var i=0; i < compChars.length; i++){
+        correctGuesses.push("-");             // fill the array with "-" in place of the char of the word so that the secret is not displayed
+    }   
+
+    displaySecret(correctGuesses);   // Pass the correctGuesses array to the Display Secret function to display the array on screen
+
     displayGuessRemain();
-    displayWins();
-    displayLosses();
-    displayGuess();
+
+}
+
+
+// Take in a Word array and display it on screen
+function displaySecret(wordArray) {
+    secretWordEl.textContent = "";
+    for (var i=0; i < wordArray.length; i++){
+        var divNode = document.createElement("div");
+        var textNode = document.createTextNode(wordArray[i]);
+        divNode.setAttribute("class", "secretLetter");
+        divNode.appendChild(textNode);
+        secretWordEl.appendChild(divNode);
+    }
 }
 
 function randPlanet(){
     planetSelect = planets[Math.floor(Math.random() * planets.length)];  // new random planet chosen
-    console.log(planetSelect);
+    console.log("Random Planent selected:" + planetSelect);
     return planetSelect;
 }
 
@@ -58,44 +93,49 @@ function displayGuessRemain() {
     numGuessRemainEl.setAttribute("class","alert-warning font-weight-bold");
 }
 
-function displayGuess(){
-    playerGuessEl.textContent = "";
-}
 
-function displayWins() {
-    playerWinsEl.textContent = winCounter;      //display the number of wins
-}
-
-function displayLosses() {
-    playerLossesEl.textContent = lossCounter;      //display the number of Losses
-}
 
 
 initNewGame();
+
+
+// alert("You did it!  You cracked the code and save the planet!");
+
 
 // Next, we give JavaScript a function to execute when onkeyup event fires.
 document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
 
-    if (validGuesses.indexOf(playerGuess) !== -1){
-        if (!(playerGuessEl.textContent.includes(playerGuess))){
-            if (guessCounter > 1) {
-                if (playerGuess === compSelection) {
-                    alert("You did it!  You cracked the code and save the planet!");
-                    gameResultEl.textContent = 'You saved the planet but it\'s not over yet!!';
-                    gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
-                    winCounter++;
-                    initNewGame();
+    if (validGuesses.includes(playerGuess) === true){
+        if (!(playerGuessEl.textContent.includes(playerGuess))){              //If the player didn't already try to guess this letter then proceed
+            if (guessCounter > 1) {                                         //Still have remaining guess
+                if (compSelection.includes(playerGuess)) {            // quick check if the Secret Word includes the player's letter guess
+                    for (var i=0; i < compChars.length; i++){
+                        if (compChars[i] === playerGuess){       // Loop through and find the indexes of the chars of the letter guessed
+                            correctGuesses[i] = playerGuess;              // update the " - " with the actual letter
+                            displaySecret(correctGuesses);
+                            console.log(correctGuesses);
+                            console.log("Match Found: " + playerGuess + "  |    Secret: " + compChars[i])
+                        }   
+                    }
                 }
                 else {
                     --guessCounter;
                     displayGuessRemain();
-                    playerGuessEl.appendChild(document.createTextNode(playerGuess + "  |  "));
-                    playerGuessEl.setAttribute("class", "alert-info");
+                    var divNode = document.createElement("div");
+                    var textNode = document.createTextNode(playerGuess);
+                    divNode.appendChild(textNode);
+                    divNode.setAttribute("class", "guessLetter");
+                    playerGuessEl.appendChild(divNode);
                     console.log(playerGuess);
                 }
+                if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
+                    
+                    alert("You've Cracked the Code and diverted the Nuke!!\nYou Planet is saved...for now");
+                    initNewGame();
+                 }  
             }
-            else {
+            else {   //loss logic
                 alert("You lost, I'm doubting your code cracking abilities!");            
                 gameResultEl.textContent = "Oh No! " + planetSelect.toUpperCase() + " was destroy, this new planet will have to do!!";
                 gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");

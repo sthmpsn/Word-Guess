@@ -20,18 +20,24 @@
             <div class="col-lg-4 statsDiv text-center font-weight-bold">
                 <h1>Save The World</h1>
                 <h3>Word Guess Game</h3>
-                <div class="alert-info px-2 py-1 text-left">
+                <div class="alert-info px-2 py-1 text-center">
                     <p>There is a World Destroyer missle heading toward the planet.</p>
-                    <p class="alert-warning">Your primary objects is to guess the missle override code to divert the missle away from the planet.</p>
                 </div>
+                <p class="alert-warning">Your primary objects is to guess the missle override code to divert the missle away from the planet.</p>
                 <p>
-                    <p>Saved the Word Count: <span id="winResults"></span></p>
-                    <p>Faild to Save the World: <span id="lossResults"></span></p>
+                    <p>Saved the World Count: <span id="winResults"></span></p>
+                    <p>Destroyed Worlds: <span id="lossResults"></span></p>
                     <p>Guesses Left: <span id="guessRemaining"></span></p>
-                    <p>Your Guesses So Far: <span id="guess"></span></p>
+                    <div>Your Guesses So Far: 
+                        <p id="guess"></p>
+                    </div>
+                    
+                    <div class="jumbotron">Password:
+                        <p id="secretWord"></p>
+                    </div>
+                    <div id="gameResult" class="jumbotron">Crack the Code and Save your Planet</div>
+                    <div id="warnBanner" class="warnings">testhjklhkjhkhkjhkjhkjh</div>
                 </p>
-                <div id="gameResult" class="jumbotron"></div>
-                <div id="warnBanner" class="warnings"></div>
             </div>
             <div class="col-lg-8 gameDiv">
                 <div class="img-planetDiv">

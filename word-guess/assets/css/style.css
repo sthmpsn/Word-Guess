@@ -7,6 +7,8 @@
 
 .jumbotron {
     font-size: 1.8rem;
+    margin-bottom: 5px;
+
 }
 
 .warnings {
@@ -15,4 +17,24 @@
 
 #imgPlanet {
     max-width: 50%;
+}
+
+.guessLetter {
+    border-style: solid;
+    padding: 5px 10px;
+    /* float: left; */
+    margin: 2px;
+    color: orange;
+    display: inline-block;    
+}
+
+.secretLetter {
+    /* width: 30px;
+    height: 30px; */
+    border-style: solid;
+    padding: 10px;
+    /* float: left; */
+    margin: 2px;
+    color: red;
+    display: inline-block;
 }

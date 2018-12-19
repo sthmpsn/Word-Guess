@@ -104,8 +104,7 @@ function loseRound() {
     }
     else{
         alert("You lost, I'm doubting your code cracking abilities!");       
-        var planetName = planetSelect.replace(/\.[^/.]+$/, "");        // strip off the file extension from the name
-        gameResultEl.textContent = "Oh No! " + planetName.toUpperCase() + " was destroy, this new planet will have to do!!";
+        gameResultEl.textContent = "Oh No! " + removeExt(planetSelect).toUpperCase() + " was destroy, this new planet will have to do!!";
         gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
         planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
         planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
@@ -132,7 +131,9 @@ function missileAnimation(callback){
     initNewRound();
 }
 
-
+function removeExt (file){
+    file.replace(/\.[^/.]+$/, "")
+}
 
 initNewRound();
 
@@ -169,7 +170,7 @@ document.onkeyup = function (event) {
                     }
                 }
                 if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
-                    gameResultEl.textContent = "You did it, you Saved " + planetSelect.toUpperCase() + " !!";
+                    gameResultEl.textContent = "You did it, you Saved " + removeExt(planetSelect).toUpperCase() + " !!";
                     gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
                     winCounter++;
                     missileAnimation();

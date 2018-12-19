@@ -47,7 +47,7 @@ var guessCounter = initGuessAllowed;
 
 
 
-function initNewGame() {
+function initNewRound() {
     correctGuesses = [];  // Clear the correctGuesses Array if entry from a previous game
     guessCounter = initGuessAllowed;   //reset Counter
     warnBannerEl.textContent = ""; //reset warning
@@ -64,9 +64,12 @@ function initNewGame() {
     }   
 
     displaySecret(correctGuesses);   // Pass the correctGuesses array to the Display Secret function to display the array on screen
-
     displayGuessRemain();
 
+}
+
+function initNewGame() {
+    location.reload();
 }
 
 
@@ -96,21 +99,23 @@ function displayGuessRemain() {
 
 
 
-initNewGame();
+initNewRound();
 
 
 // alert("You did it!  You cracked the code and save the planet!");
 
 
 // Next, we give JavaScript a function to execute when onkeyup event fires.
-document.onkeyup = function (event) {
+
+    
+    document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
 
     if (validGuesses.includes(playerGuess) === true){
         if (!(playerGuessEl.textContent.includes(playerGuess))){              //If the player didn't already try to guess this letter then proceed
-            if (guessCounter > 1) {                                         //Still have remaining guess
+            if (guessCounter >= 1) {                                         //Still have remaining guess
                 if (compSelection.includes(playerGuess)) {            // quick check if the Secret Word includes the player's letter guess
-                    for (var i=0; i < (compChars.length + 1); i++){
+                    for (var i=0; i < (compChars.length); i++){
                         if (compChars[i] === playerGuess){       // Loop through and find the indexes of the chars of the letter guessed
                             correctGuesses[i] = playerGuess;              // update the " - " with the actual letter
                             displaySecret(correctGuesses);
@@ -120,7 +125,7 @@ document.onkeyup = function (event) {
                     }
                 }
                 else {
-                    --guessCounter;
+                    guessCounter--;
                     displayGuessRemain();
                     var divNode = document.createElement("div");
                     var textNode = document.createTextNode(playerGuess);
@@ -132,30 +137,19 @@ document.onkeyup = function (event) {
                 if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
                     gameResultEl.textContent = "You did it, you Saved " + planetSelect.toUpperCase() + " !!";
                     gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
-                    var playAgain = confirm("Would you like to play again?");
-                    if (playAgain === true){
-                        initNewGame();
-                    }
-                    else{
-                        gameResultEl.textContent = "GAME OVER!!";
-                        gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-                        warnBannerEl.textContent = "Click to Replay";
-                        warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
-                        warnBannerEl.addEventListener('click', function(event){
-                            initNewGame();
-                        });
-
-                    }
+                    winCounter++;
+                    initNewRound();
                  }  
             }
             else {   //loss logic
-                alert("You lost, I'm doubting your code cracking abilities!");            
-                gameResultEl.textContent = "Oh No! " + planetSelect.toUpperCase() + " was destroy, this new planet will have to do!!";
+                alert("You lost, I'm doubting your code cracking abilities!");       
+                var planetName = planetSelect.replace(/\.[^/.]+$/, "");        // strip off the file extension from the name
+                gameResultEl.textContent = "Oh No! " + planetName.toUpperCase() + " was destroy, this new planet will have to do!!";
                 gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
                 planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
                 planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
                 lossCounter++;
-                initNewGame();
+                initNewRound();
             }
         }
         else {
@@ -171,3 +165,20 @@ document.onkeyup = function (event) {
     }
 };
 
+
+
+// gameResultEl.textContent = "GAME OVER!!";
+// gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+// warnBannerEl.textContent = "Click to Replay";
+// warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
+// warnBannerEl.addEventListener('click', function(event){
+//     initNewRound();
+// });
+
+
+
+
+// var playAgain = confirm("Would you like to play again?");
+// if (playAgain === true){
+//     initNewRound();
+// }

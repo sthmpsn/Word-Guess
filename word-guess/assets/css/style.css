@@ -20,6 +20,10 @@
     height:100%;
 }
 
+.hidden {
+    opacity: 0;;
+}
+
 #imgMissile {
     width: 300px;
     height: 100px;

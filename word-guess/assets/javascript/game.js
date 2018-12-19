@@ -121,8 +121,9 @@ function gameOver() {
     warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
     planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
     planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
+    missileEl.setAttribute("class", "hidden");
     warnBannerEl.addEventListener('click', function(event){
-        initNewRound();
+        initNewGame();
     });
 }
 

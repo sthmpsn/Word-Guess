@@ -39,6 +39,7 @@ var gameResultEl = document.getElementById("gameResult");
 var warnBannerEl = document.getElementById("warnBanner");
 var planetImgEl = document.getElementById("imgPlanet");
 var secretWordEl = document.getElementById("secretWord");
+var missileEl = document.getElementById("imgMissile");
 
 var winCounter = 0;
 var lossCounter = 0;
@@ -58,6 +59,7 @@ function initNewRound() {
     compSelection = secretWords[Math.floor(Math.random() * secretWords.length)];  // new random secret word chosen
     compChars = compSelection.split("");
     console.log("Computer Selection: " + compSelection, "Split Results:" + compChars);     //use the console to cheat
+    // missileEl.setAttribute("class", "img-fluid");      // NEED TO FIGURE OUT CALL BACK FUNCTION SO THE ANIMATION CAN PLAY then reset 
 
     for (var i=0; i < compChars.length; i++){
         correctGuesses.push("-");             // fill the array with "-" in place of the char of the word so that the secret is not displayed
@@ -96,19 +98,47 @@ function displayGuessRemain() {
     numGuessRemainEl.setAttribute("class","alert-warning font-weight-bold");
 }
 
+function loseRound() {
+    if (planets.length === 0){
+        gameOver();
+    }
+    else{
+        alert("You lost, I'm doubting your code cracking abilities!");       
+        var planetName = planetSelect.replace(/\.[^/.]+$/, "");        // strip off the file extension from the name
+        gameResultEl.textContent = "Oh No! " + planetName.toUpperCase() + " was destroy, this new planet will have to do!!";
+        gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+        planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
+        planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
+        lossCounter++;
+        initNewRound();
+    }
+}
+
+function gameOver() {
+    gameResultEl.textContent = "GAME OVER!!";
+    gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+    warnBannerEl.textContent = "Click to Replay";
+    warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
+    planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
+    planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
+    warnBannerEl.addEventListener('click', function(event){
+        initNewRound();
+    });
+}
+
+function missileAnimation(callback){
+    missileEl.setAttribute("class", "img-fluid missileDivert");
+    initNewRound();
+}
 
 
 
 initNewRound();
 
 
-// alert("You did it!  You cracked the code and save the planet!");
-
-
 // Next, we give JavaScript a function to execute when onkeyup event fires.
-
     
-    document.onkeyup = function (event) {
+document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
 
     if (validGuesses.includes(playerGuess) === true){
@@ -133,22 +163,19 @@ initNewRound();
                     divNode.setAttribute("class", "guessLetter");
                     playerGuessEl.appendChild(divNode);
                     console.log(playerGuess);
+                    if (guessCounter < 1){
+                        loseRound();
+                    }
                 }
                 if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
                     gameResultEl.textContent = "You did it, you Saved " + planetSelect.toUpperCase() + " !!";
                     gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
                     winCounter++;
-                    initNewRound();
-                 }  
+                    missileAnimation();
+                }  
             }
             else {   //loss logic
-                alert("You lost, I'm doubting your code cracking abilities!");       
-                var planetName = planetSelect.replace(/\.[^/.]+$/, "");        // strip off the file extension from the name
-                gameResultEl.textContent = "Oh No! " + planetName.toUpperCase() + " was destroy, this new planet will have to do!!";
-                gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-                planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
-                planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
-                lossCounter++;
+                loseRound();
                 initNewRound();
             }
         }
@@ -167,18 +194,3 @@ initNewRound();
 
 
 
-// gameResultEl.textContent = "GAME OVER!!";
-// gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-// warnBannerEl.textContent = "Click to Replay";
-// warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
-// warnBannerEl.addEventListener('click', function(event){
-//     initNewRound();
-// });
-
-
-
-
-// var playAgain = confirm("Would you like to play again?");
-// if (playAgain === true){
-//     initNewRound();
-// }

@@ -2,7 +2,7 @@
 .gameDiv {
     background-image: url("../images/darkness.png");
     color: white;
-    height: 100%;
+    
 }
 
 .jumbotron {
@@ -16,8 +16,49 @@
     /* padding: 15px 0; */
 }
 
+#imgDeathStar{
+    width:100%;
+    height:100%;
+}
+
+#imgMissile {
+    width: 300px;
+    height: 100px;
+
+}
+
+@keyframes missleDivert {
+    0%   {
+        right: 50px;
+        top: 10px;
+        transform: rotate(-2deg);
+    }
+    25%  {
+        right: 100px;
+        top: 20px;
+        transform: rotate(-6deg);
+    }
+    50%  {
+        right: 150px;
+        top: 30px;
+        transform: rotate(-10deg);
+    }
+    100% {
+        right: 200px;
+        top: 40px;
+        transform: rotate(-14deg);
+    }
+  }
+
+.missileDivert {
+    animation-name: missleDivert;
+    animation-duration: 5s;
+    position: relative;
+}
+
 #imgPlanet {
     max-width: 50%;
+    min-height: auto;
 }
 
 .guessLetter {

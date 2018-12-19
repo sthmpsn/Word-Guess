@@ -2,32 +2,45 @@
 var alphabet = "abcdefghijklmnopqrstuvwxyz";
 var validGuesses = alphabet.split("");
 
-// Array to select random word from 
-var secretWords = [
-    "rosebud",
-    "buttercup",
-    "predator",
-    "alien"
-];
+// Define Array + objects and add object to the array
+var vulcan = {name:"vulcan", hint:"Spock"};
+var chewy = {name:"chewy", hint:"Wookie"};
+var predator = {name:"predator", hint:"Get to the Chopper!"};
+var alien = {name:"alien", hint:"Prometheus"};
+var yoda = {name:"yoda", hint:"Wise and green he is"};
+
+var secretWords = [];
+secretWords.push(vulcan,chewy,predator,alien,yoda);  // add objects to the array
+
+
+console.log(secretWords);
+console.log(secretWords[2].hint);
+
 
 var correctGuesses = [];     // Array to store the correctly guessed letters
 
 // Static defint Array of Planet images
-var planets = [
-    "europa.jpg",
-    "jupiter.jpg",
-    "mars.jpg",
-    "mercury.jpg",
-    "moon.jpg",
-    "neptune.jpg",
-    "pluto.jpg",
-    "saturn.jpg",
-    "titan.jpg",
-    "uranus.jpg",
-    "venus.png"
-];
+var earth = {name:"EARTH", filename:"earth.jpg"}
+var europa = {name:"EUROPA", fileName:"europa.jpg"};
+var jupiter = {name:"JUPITER", fileName:"jupiter.jpg"};
+var mars = {name:"MARS", fileName:"mars.jpg"};
+var mercury = {name:"MERCURY", fileName:"mercury.jpg"};
+var moon = {name:"MOON", fileName:"moon.jpg"};
+var neptune = {name:"NEPTUNE", fileName:"neptune.jpg"};
+var pluto = {name:"PLUTO", fileName:"pluto.jpg"};
+var saturn= {name:"SATURN", fileName:"saturn.jpg"};
+var titan = {name:"TITAN", fileName:"titan.jpg"};
+var uranus = {name:"URANUS", fileName:"uranus.jpg"};
+var venus = {name:"VENUS", fileName:"venus.png"};
 
-var planetSelect = "earth"; // earth is always starting planet static in HTML
+var planets = [];
+planets.push(earth,europa,jupiter,mars,mercury,moon,neptune,pluto,saturn,titan,uranus,venus);  // add planet objects to the array
+
+console.log(planets);
+
+
+var planetSelect = planets[0]; // earth is always starting planet static in HTML
+planets.splice(planets.indexOf(planetSelect),1);
 var compSelection = "";  //secret word selection
 
 // Get the Element that will be updated with the User guesses, wins, losses, and remaining guesses
@@ -39,13 +52,14 @@ var gameResultEl = document.getElementById("gameResult");
 var warnBannerEl = document.getElementById("warnBanner");
 var planetImgEl = document.getElementById("imgPlanet");
 var secretWordEl = document.getElementById("secretWord");
+var hintEl = document.getElementById("hint");
 var missileEl = document.getElementById("imgMissile");
 
 var winCounter = 0;
 var lossCounter = 0;
 var initGuessAllowed = 9;  // initialize the number of guesses to allowed before losing a round
 var guessCounter = initGuessAllowed;
-
+var randNum = 0;
 
 
 function initNewRound() {
@@ -55,10 +69,13 @@ function initNewRound() {
     playerGuessEl.textContent = ""; //reset "Your Guesses so Far" 
     playerWinsEl.textContent = winCounter;      //display the number of wins
     playerLossesEl.textContent = lossCounter;      //display the number of Losses
-
-    compSelection = secretWords[Math.floor(Math.random() * secretWords.length)];  // new random secret word chosen
+    randNum = Math.floor(Math.random() * secretWords.length);
+    compSelection = secretWords[randNum].name;  // new random secret word chosen
+    hintEl.textContent = secretWords[randNum].hint;
+    
     compChars = compSelection.split("");
     console.log("Computer Selection: " + compSelection, "Split Results:" + compChars);     //use the console to cheat
+
     // missileEl.setAttribute("class", "img-fluid");      // NEED TO FIGURE OUT CALL BACK FUNCTION SO THE ANIMATION CAN PLAY then reset 
 
     for (var i=0; i < compChars.length; i++){
@@ -88,7 +105,7 @@ function displaySecret(wordArray) {
 }
 
 function randPlanet(){
-    planetSelect = planets[Math.floor(Math.random() * planets.length)];  // new random planet chosen
+    planetSelect = planets[randNum];  // new random planet chosen
     console.log("Random Planent selected:" + planetSelect);
     return planetSelect;
 }
@@ -98,15 +115,25 @@ function displayGuessRemain() {
     numGuessRemainEl.setAttribute("class","alert-warning font-weight-bold");
 }
 
+function winRound(){
+     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
+     gameResultEl.textContent = "You did it, you Saved " + planetSelect.name + " !!";
+     gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
+     winCounter++;
+     missileAnimation();
+     initNewRound();
+}
+
 function loseRound() {
+    // Lose Game Logic
     if (planets.length === 0){
         gameOver();
     }
     else{
         alert("You lost, I'm doubting your code cracking abilities!");       
-        gameResultEl.textContent = "Oh No! " + removeExt(planetSelect).toUpperCase() + " was destroy, this new planet will have to do!!";
+        gameResultEl.textContent = "Oh No! " + planetSelect.name + " was destroy, this new planet will have to do!!";
         gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-        planetImgEl.setAttribute("src","assets/images/" + randPlanet());    //set a new random planet image
+        planetImgEl.setAttribute("src","assets/images/" + randPlanet().fileName);    //set a new random planet image
         planets.splice(planets.indexOf(planetSelect),1);   //remove the randomly selected planet from the array so it can't be chosen again...it was destroyed
         lossCounter++;
         initNewRound();
@@ -131,9 +158,6 @@ function missileAnimation(callback){
     initNewRound();
 }
 
-function removeExt (file){
-    file.replace(/\.[^/.]+$/, "")
-}
 
 initNewRound();
 
@@ -170,15 +194,12 @@ document.onkeyup = function (event) {
                     }
                 }
                 if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
-                    gameResultEl.textContent = "You did it, you Saved " + removeExt(planetSelect).toUpperCase() + " !!";
-                    gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
-                    winCounter++;
-                    missileAnimation();
+                  winRound();
                 }  
             }
             else {   //loss logic
                 loseRound();
-                initNewRound();
+                
             }
         }
         else {

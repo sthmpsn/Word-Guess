@@ -30,6 +30,11 @@
 
 }
 
+#hint {
+    font-size: 1.5rem;
+    color: green;
+}
+
 @keyframes missleDivert {
     0%   {
         right: 50px;

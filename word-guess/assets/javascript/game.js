@@ -110,7 +110,7 @@ document.onkeyup = function (event) {
         if (!(playerGuessEl.textContent.includes(playerGuess))){              //If the player didn't already try to guess this letter then proceed
             if (guessCounter > 1) {                                         //Still have remaining guess
                 if (compSelection.includes(playerGuess)) {            // quick check if the Secret Word includes the player's letter guess
-                    for (var i=0; i < compChars.length; i++){
+                    for (var i=0; i < (compChars.length + 1); i++){
                         if (compChars[i] === playerGuess){       // Loop through and find the indexes of the chars of the letter guessed
                             correctGuesses[i] = playerGuess;              // update the " - " with the actual letter
                             displaySecret(correctGuesses);
@@ -130,9 +130,22 @@ document.onkeyup = function (event) {
                     console.log(playerGuess);
                 }
                 if (!(correctGuesses.includes("-"))){     // Game Winner Logic.  If the Correct Guess Array doesn't contain any more "-" then all letters must have been found
-                    
-                    alert("You've Cracked the Code and diverted the Nuke!!\nYou Planet is saved...for now");
-                    initNewGame();
+                    gameResultEl.textContent = "You did it, you Saved " + planetSelect.toUpperCase() + " !!";
+                    gameResultEl.setAttribute("class", "jumbotron text-center alert-success font-weight-bold");
+                    var playAgain = confirm("Would you like to play again?");
+                    if (playAgain === true){
+                        initNewGame();
+                    }
+                    else{
+                        gameResultEl.textContent = "GAME OVER!!";
+                        gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
+                        warnBannerEl.textContent = "Click to Replay";
+                        warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
+                        warnBannerEl.addEventListener('click', function(event){
+                            initNewGame();
+                        });
+
+                    }
                  }  
             }
             else {   //loss logic

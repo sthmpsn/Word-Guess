@@ -146,14 +146,12 @@ function loseRound() {
 function gameOver() {
     gameResultEl.textContent = "GAME OVER!!";
     gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-    hintEl.textContent = "Click to Replay";
-    hintEl.setAttribute("class", "warnings alert-success text-center"); 
-    hintDivEl.textContent = "";
-    hintDivEl.setAttribute("class", "warnings alert-success text-center"); 
-
+    hintDivEl.textContent = "Click Here to Replay";
+    hintDivEl.setAttribute("class", "warnings alert-success text-center py-4"); 
+    missileEl.setAttribute("class", "hidden");
     planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
     planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
-    missileEl.setAttribute("class", "hidden");
+
     hint.addEventListener('click', function(event){
         initNewGame();
     });

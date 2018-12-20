@@ -27,14 +27,12 @@ var mars = {name:"MARS", fileName:"mars.jpg"};
 var mercury = {name:"MERCURY", fileName:"mercury.jpg"};
 var moon = {name:"MOON", fileName:"moon.jpg"};
 var neptune = {name:"NEPTUNE", fileName:"neptune.jpg"};
-var pluto = {name:"PLUTO", fileName:"pluto.jpg"};
 var saturn= {name:"SATURN", fileName:"saturn.jpg"};
 var titan = {name:"TITAN", fileName:"titan.jpg"};
-var uranus = {name:"URANUS", fileName:"uranus.jpg"};
 var venus = {name:"VENUS", fileName:"venus.png"};
 
 var planets = [];
-planets.push(earth,europa,jupiter,mars,mercury,moon,neptune,pluto,saturn,titan,uranus,venus);  // add planet objects to the array
+planets.push(earth,europa,jupiter,mars,mercury,moon,neptune,saturn,titan,venus);  // add planet objects to the array
 
 console.log(planets);
 
@@ -53,6 +51,7 @@ var warnBannerEl = document.getElementById("warnBanner");
 var planetImgEl = document.getElementById("imgPlanet");
 var secretWordEl = document.getElementById("secretWord");
 var hintEl = document.getElementById("hint");
+var hintDivEl = document.getElementById("hintDiv");
 var missileEl = document.getElementById("imgMissile");
 
 var winCounter = 0;
@@ -147,18 +146,20 @@ function loseRound() {
 function gameOver() {
     gameResultEl.textContent = "GAME OVER!!";
     gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
-    warnBannerEl.textContent = "Click to Replay";
-    warnBannerEl.setAttribute("class", "warnings alert-success text-center"); 
+    hintEl.textContent = "Click to Replay";
+    hintEl.setAttribute("class", "warnings alert-success text-center"); 
+    hintDivEl.textContent = "";
+    hintDivEl.setAttribute("class", "warnings alert-success text-center"); 
+
     planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
     planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
     missileEl.setAttribute("class", "hidden");
-    warnBannerEl.addEventListener('click', function(event){
+    hint.addEventListener('click', function(event){
         initNewGame();
     });
 }
 
 function missileAnimation(callback){
-
     missileEl.setAttribute("class", "img-fluid missileDivert");
     initNewRound();
 }

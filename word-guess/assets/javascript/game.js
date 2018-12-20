@@ -76,7 +76,7 @@ function initNewRound() {
     compChars = compSelection.split("");
     console.log("Computer Selection: " + compSelection, "Split Results:" + compChars);     //use the console to cheat
 
-    // missileEl.setAttribute("class", "img-fluid");      // NEED TO FIGURE OUT CALL BACK FUNCTION SO THE ANIMATION CAN PLAY then reset 
+ 
 
     for (var i=0; i < compChars.length; i++){
         correctGuesses.push("-");             // fill the array with "-" in place of the char of the word so that the secret is not displayed
@@ -126,6 +126,7 @@ function winRound(){
 
 function loseRound() {
     // Lose Game Logic
+
     if (planets.length === 0){
         gameOver();
     }
@@ -154,6 +155,7 @@ function gameOver() {
 }
 
 function missileAnimation(callback){
+
     missileEl.setAttribute("class", "img-fluid missileDivert");
     initNewRound();
 }
@@ -166,6 +168,7 @@ initNewRound();
     
 document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
+    missileEl.removeAttribute("class");  // reset animation
 
     if (validGuesses.includes(playerGuess) === true){
         if (!(playerGuessEl.textContent.includes(playerGuess))){              //If the player didn't already try to guess this letter then proceed

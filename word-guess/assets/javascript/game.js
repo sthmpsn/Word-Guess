@@ -59,7 +59,8 @@ var winCounter = 0;
 var lossCounter = 0;
 var initGuessAllowed = 9;  // initialize the number of guesses to allowed before losing a round
 var guessCounter = initGuessAllowed;
-var randNum = 0;
+var randNumSecret = 0;
+var randNumPlanet = 0;
 
 
 function initNewRound() {
@@ -69,9 +70,10 @@ function initNewRound() {
     playerGuessEl.textContent = ""; //reset "Your Guesses so Far" 
     playerWinsEl.textContent = winCounter;      //display the number of wins
     playerLossesEl.textContent = lossCounter;      //display the number of Losses
-    randNum = Math.floor(Math.random() * secretWords.length);
-    compSelection = secretWords[randNum].name;  // new random secret word chosen
-    hintEl.textContent = secretWords[randNum].hint;
+    randNumSecret = Math.floor(Math.random() * secretWords.length);
+    randNumPlanet = Math.floor(Math.random() * planets.length);
+    compSelection = secretWords[randNumSecret].name;  // new random secret word chosen
+    hintEl.textContent = secretWords[randNumSecret].hint;
     
     compChars = compSelection.split("");
     console.log("Computer Selection: " + compSelection, "Split Results:" + compChars);     //use the console to cheat
@@ -105,8 +107,9 @@ function displaySecret(wordArray) {
 }
 
 function randPlanet(){
-    planetSelect = planets[randNum];  // new random planet chosen
+    planetSelect = planets[randNumPlanet];  // new random planet chosen
     console.log("Random Planent selected:" + planetSelect);
+    console.log("Random Num Chosen: " + randNumPlanet);
     return planetSelect;
 }
 

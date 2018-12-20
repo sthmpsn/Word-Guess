@@ -21,18 +21,15 @@ var correctGuesses = [];     // Array to store the correctly guessed letters
 
 // Static defint Array of Planet images
 var earth = {name:"EARTH", filename:"earth.jpg"}
-var europa = {name:"EUROPA", fileName:"europa.jpg"};
 var jupiter = {name:"JUPITER", fileName:"jupiter.jpg"};
 var mars = {name:"MARS", fileName:"mars.jpg"};
 var mercury = {name:"MERCURY", fileName:"mercury.jpg"};
-var moon = {name:"MOON", fileName:"moon.jpg"};
 var neptune = {name:"NEPTUNE", fileName:"neptune.jpg"};
 var saturn= {name:"SATURN", fileName:"saturn.jpg"};
-var titan = {name:"TITAN", fileName:"titan.jpg"};
 var venus = {name:"VENUS", fileName:"venus.png"};
 
 var planets = [];
-planets.push(earth,europa,jupiter,mars,mercury,moon,neptune,saturn,titan,venus);  // add planet objects to the array
+planets.push(earth,jupiter,mars,mercury,neptune,saturn,venus);  // add planet objects to the array
 
 console.log(planets);
 
@@ -152,7 +149,7 @@ function gameOver() {
     planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
     planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
 
-    hint.addEventListener('click', function(event){
+    hintDivEl.addEventListener('click', function(event){
         initNewGame();
     });
 }

@@ -145,6 +145,7 @@ function gameOver() {
     gameResultEl.setAttribute("class", "jumbotron text-center alert-danger font-weight-bold");
     hintDivEl.textContent = "Click Here to Replay";
     hintDivEl.setAttribute("class", "warnings alert-success text-center py-4"); 
+    missileEl.removeAttribute("class");
     missileEl.setAttribute("class", "hidden");
     planetImgEl.setAttribute("src","assets/images/deathstar-explode.gif");    //death star explode gif
     planetImgEl.setAttribute("id","imgDeathStar");    //death star explode gif
@@ -168,6 +169,7 @@ initNewRound();
 document.onkeyup = function (event) {
     var playerGuess = event.key.toLowerCase();
     missileEl.removeAttribute("class");  // reset animation
+    missileEl.setAttribute("class", "img-fluid");
 
     if (validGuesses.includes(playerGuess) === true){
         if (!(playerGuessEl.textContent.includes(playerGuess))){              //If the player didn't already try to guess this letter then proceed
